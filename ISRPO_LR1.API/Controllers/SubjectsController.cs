@@ -197,6 +197,9 @@ public class SubjectsController : Controller
             if (subject is null)
                 return BadRequest(new ErrorModel("Subject does not exist"));
 
+            subject.sj_name = editSubject.sj_name;
+            subject.sj_hours = editSubject.sj_hours;
+
             _context.Entry(subject).State = EntityState.Modified;
 
             switch (await _context.SaveChangesAsync())

@@ -197,6 +197,8 @@ public class GradesController : Controller
             if (grade is null)
                 return BadRequest(new ErrorModel("Grade does not exist"));
 
+            grade.g_value = editGrade.g_value;
+
             _context.Entry(grade).State = EntityState.Modified;
 
             switch (await _context.SaveChangesAsync())

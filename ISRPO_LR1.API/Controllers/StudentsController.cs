@@ -200,6 +200,10 @@ public class StudentsController : Controller
             if (student is null)
                 return BadRequest(new ErrorModel("Student does not exist"));
 
+            student.s_birth_date = editStudent.s_birth_date;
+            student.s_email = editStudent.s_email;
+            student.s_full_name = editStudent.s_full_name;
+
             _context.Entry(student).State = EntityState.Modified;
 
             switch (await _context.SaveChangesAsync())
