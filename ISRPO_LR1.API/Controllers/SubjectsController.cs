@@ -40,34 +40,41 @@ public class SubjectsController : Controller
     [ProducesResponseType(typeof(ErrorModel), (int) HttpStatusCode.InternalServerError)]
     public async Task<ActionResult<IEnumerable<Subject>>> Get([FromQuery] QueryParameters<Subject> queryParameters)
     {
-        _logger.LogDebug("Get list of subjects");
-
-        IQueryable<Subject> allSubjects =
-            _context.Subjects
-                .Include(s => s.Grades)
-                .OrderBy(queryParameters.OrderBy, queryParameters.IsDescending());
-
-        if (queryParameters.HasQuery())
+        try
         {
-            try
+            _logger.LogDebug("Get list of subjects");
+
+            IQueryable<Subject> allSubjects =
+                _context.Subjects
+                    .Include(s => s.Grades);
+
+            if (queryParameters.HasQuery())
             {
-                var parametersObject = (Subject) queryParameters.Object;
-                allSubjects = allSubjects.Where(u =>
-                    u.sj_name == parametersObject.sj_name
-                );
+                try
+                {
+                    var parametersObject = (Subject) queryParameters.Object;
+                    allSubjects = allSubjects.Where(u =>
+                        u.sj_name == parametersObject.sj_name
+                    );
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e.Message);
+                    return StatusCode(StatusCodes.Status500InternalServerError,
+                        new ErrorModel("Some error has occurred"));
+                }
             }
-            catch (Exception e)
+
+            return await allSubjects.CountAsync() switch
             {
-                _logger.LogError(e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred"));
-            }
+                0 => NotFound(new ErrorModel("Subjects not found")),
+                _ => Ok(allSubjects)
+            };
         }
-
-        return await allSubjects.CountAsync() switch
+        catch
         {
-            0 => NotFound(new ErrorModel("Subjects not found")),
-            _ => Ok(allSubjects)
-        };
+            return StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred"));
+        }
     }
 
     /// <summary>
@@ -89,15 +96,22 @@ public class SubjectsController : Controller
     [ProducesResponseType(typeof(ErrorModel), (int) HttpStatusCode.InternalServerError)]
     public async Task<ActionResult<Subject>> Get(int id)
     {
-        _logger.LogDebug("Get subject with id = {Id}", id);
+        try
+        {
+            _logger.LogDebug("Get subject with id = {Id}", id);
 
-        var subject = await _context.Subjects
-            .FirstOrDefaultAsync(u => u.sj_id == id);
+            var subject = await _context.Subjects
+                .FirstOrDefaultAsync(u => u.sj_id == id);
 
-        if (subject is null)
-            return NotFound(new ErrorModel("Subject not found"));
+            if (subject is null)
+                return NotFound(new ErrorModel("Subject not found"));
 
-        return Ok(subject);
+            return Ok(subject);
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred"));
+        }
     }
 
     /// <summary>
@@ -124,18 +138,25 @@ public class SubjectsController : Controller
     [ProducesResponseType(typeof(ErrorModel), (int) HttpStatusCode.InternalServerError)]
     public async Task<ActionResult<Subject>> Post([FromBody] Subject? subject)
     {
-        if (subject is null)
-            return BadRequest(new ErrorModel("Input data is empty"));
-
-        _logger.LogDebug("Create new subject with id = {id}", subject.sj_id);
-
-        var createdSubject = await _context.Subjects.AddAsync(subject);
-
-        return await _context.SaveChangesAsync() switch
+        try
         {
-            0 => StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred")),
-            _ => StatusCode(StatusCodes.Status201Created, createdSubject)
-        };
+            if (subject is null)
+                return BadRequest(new ErrorModel("Input data is empty"));
+
+            _logger.LogDebug("Create new subject with id = {id}", subject.sj_id);
+
+            var createdSubject = await _context.Subjects.AddAsync(subject);
+
+            return await _context.SaveChangesAsync() switch
+            {
+                0 => StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred")),
+                _ => StatusCode(StatusCodes.Status201Created, createdSubject)
+            };
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred"));
+        }
     }
 
     /// <summary>
@@ -166,32 +187,41 @@ public class SubjectsController : Controller
     [ProducesResponseType(typeof(ErrorModel), (int) HttpStatusCode.InternalServerError)]
     public async Task<ActionResult<Subject>> Put([FromBody] Subject? editSubject)
     {
-        if (editSubject is null)
-            return BadRequest(new ErrorModel("Input data is empty"));
-
-        if (!_context.Subjects.Any(u => u.sj_id == editSubject.sj_id))
-            return NotFound(new ErrorModel("Subject not found"));
-
-        _logger.LogDebug("Update existing subject with id = {Id}", editSubject.sj_id);
-
-        var subject = await _context.Subjects
-            .FirstOrDefaultAsync(u => u.sj_id == editSubject.sj_id);
-
-        if (subject is null)
-            return BadRequest(new ErrorModel("Subject does not exist"));
-
-        _context.Entry(subject).State = EntityState.Modified;
-
-        switch (await _context.SaveChangesAsync())
+        try
         {
-            case 0:
-                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred"));
-            default:
-                var editedSubject =
-                    await _context.Subjects.FirstOrDefaultAsync(u => u.sj_id == subject.sj_id);
-                return editedSubject is null
-                    ? StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred"))
-                    : Ok(editedSubject);
+            if (editSubject is null)
+                return BadRequest(new ErrorModel("Input data is empty"));
+
+            if (!_context.Subjects.Any(u => u.sj_id == editSubject.sj_id))
+                return NotFound(new ErrorModel("Subject not found"));
+
+            _logger.LogDebug("Update existing subject with id = {Id}", editSubject.sj_id);
+
+            var subject = await _context.Subjects
+                .FirstOrDefaultAsync(u => u.sj_id == editSubject.sj_id);
+
+            if (subject is null)
+                return BadRequest(new ErrorModel("Subject does not exist"));
+
+            _context.Entry(subject).State = EntityState.Modified;
+
+            switch (await _context.SaveChangesAsync())
+            {
+                case 0:
+                    return StatusCode(StatusCodes.Status500InternalServerError,
+                        new ErrorModel("Some error has occurred"));
+                default:
+                    var editedSubject =
+                        await _context.Subjects.FirstOrDefaultAsync(u => u.sj_id == subject.sj_id);
+                    return editedSubject is null
+                        ? StatusCode(StatusCodes.Status500InternalServerError,
+                            new ErrorModel("Some error has occurred"))
+                        : Ok(editedSubject);
+            }
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred"));
         }
     }
 
@@ -216,22 +246,29 @@ public class SubjectsController : Controller
     [ProducesResponseType(typeof(ErrorModel), (int) HttpStatusCode.InternalServerError)]
     public async Task<ActionResult> Delete(long id)
     {
-        if (id <= 0)
-            return BadRequest(new ErrorModel("The input data is empty"));
-
-        _logger.LogDebug("Delete existing subject with id = {Id}", id);
-
-        var toDelete = await _context.Subjects.FirstOrDefaultAsync(u => u.sj_id == id);
-
-        if (toDelete is null)
-            return NotFound(new ErrorModel("Subject not found"));
-
-        _context.Subjects.Remove(toDelete);
-
-        return await _context.SaveChangesAsync() switch
+        try
         {
-            0 => StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred")),
-            _ => NoContent()
-        };
+            if (id <= 0)
+                return BadRequest(new ErrorModel("The input data is empty"));
+
+            _logger.LogDebug("Delete existing subject with id = {Id}", id);
+
+            var toDelete = await _context.Subjects.FirstOrDefaultAsync(u => u.sj_id == id);
+
+            if (toDelete is null)
+                return NotFound(new ErrorModel("Subject not found"));
+
+            _context.Subjects.Remove(toDelete);
+
+            return await _context.SaveChangesAsync() switch
+            {
+                0 => StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred")),
+                _ => NoContent()
+            };
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred"));
+        }
     }
 }

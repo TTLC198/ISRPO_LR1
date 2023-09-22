@@ -40,33 +40,40 @@ public class GradesController : Controller
     [ProducesResponseType(typeof(ErrorModel), (int) HttpStatusCode.InternalServerError)]
     public async Task<ActionResult<IEnumerable<Grade>>> Get([FromQuery] QueryParameters<Grade> queryParameters)
     {
-        _logger.LogDebug("Get list of grades");
-
-        IQueryable<Grade> allGrades =
-            _context.Grades
-                .OrderBy(queryParameters.OrderBy, queryParameters.IsDescending());
-
-        if (queryParameters.HasQuery())
+        try
         {
-            try
+            _logger.LogDebug("Get list of grades");
+
+            IQueryable<Grade> allGrades =
+                _context.Grades;
+
+            if (queryParameters.HasQuery())
             {
-                var parametersObject = (Grade) queryParameters.Object;
-                allGrades = allGrades.Where(u =>
-                    u.g_value == parametersObject.g_value
-                );
+                try
+                {
+                    var parametersObject = (Grade) queryParameters.Object;
+                    allGrades = allGrades.Where(u =>
+                        u.g_value == parametersObject.g_value
+                    );
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e.Message);
+                    return StatusCode(StatusCodes.Status500InternalServerError,
+                        new ErrorModel("Some error has occurred"));
+                }
             }
-            catch (Exception e)
+
+            return await allGrades.CountAsync() switch
             {
-                _logger.LogError(e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred"));
-            }
+                0 => NotFound(new ErrorModel("Grades not found")),
+                _ => Ok(allGrades)
+            };
         }
-        
-        return await allGrades.CountAsync() switch
+        catch
         {
-            0 => NotFound(new ErrorModel("Grades not found")),
-            _ => Ok(allGrades)
-        };
+            return StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred"));
+        }
     }
     
     /// <summary>
@@ -88,15 +95,22 @@ public class GradesController : Controller
     [ProducesResponseType(typeof(ErrorModel), (int) HttpStatusCode.InternalServerError)]
     public async Task<ActionResult<Grade>> Get(int id)
     {
-        _logger.LogDebug("Get editGrade with id = {Id}", id);
+        try
+        {
+            _logger.LogDebug("Get editGrade with id = {Id}", id);
 
-        var grade = await _context.Grades
-            .FirstOrDefaultAsync(u => u.g_id == id);
-        
-        if (grade is null)
-            return NotFound(new ErrorModel("Grade not found"));
+            var grade = await _context.Grades
+                .FirstOrDefaultAsync(u => u.g_id == id);
 
-        return Ok(grade);
+            if (grade is null)
+                return NotFound(new ErrorModel("Grade not found"));
+
+            return Ok(grade);
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred"));
+        }
     }
 
     /// <summary>
@@ -124,18 +138,25 @@ public class GradesController : Controller
     [ProducesResponseType(typeof(ErrorModel), (int) HttpStatusCode.InternalServerError)]
     public async Task<ActionResult<Grade>> Post([FromBody] Grade? grade)
     {
-        if (grade is null)
-            return BadRequest(new ErrorModel("Input data is empty"));
-
-        _logger.LogDebug("Create new editGrade with value = {value}", grade.g_value);
-
-        var createdGrade = await _context.Grades.AddAsync(grade);
-
-        return await _context.SaveChangesAsync() switch
+        try
         {
-            0 => StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred")),
-            _ => StatusCode(StatusCodes.Status201Created, createdGrade)
-        };
+            if (grade is null)
+                return BadRequest(new ErrorModel("Input data is empty"));
+
+            _logger.LogDebug("Create new editGrade with value = {value}", grade.g_value);
+
+            var createdGrade = await _context.Grades.AddAsync(grade);
+
+            return await _context.SaveChangesAsync() switch
+            {
+                0 => StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred")),
+                _ => StatusCode(StatusCodes.Status201Created, createdGrade)
+            };
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred"));
+        }
     }
 
     /// <summary>
@@ -167,31 +188,40 @@ public class GradesController : Controller
     [ProducesResponseType(typeof(ErrorModel), (int) HttpStatusCode.InternalServerError)]
     public async Task<ActionResult<Grade>> Put([FromBody] Grade editGrade)
     {
-        if (editGrade is null)
-            return BadRequest(new ErrorModel("Input data is empty"));
-
-        if (!_context.Grades.Any(u => u.g_id == editGrade.g_id))
-            return NotFound(new ErrorModel("User not found"));
-        _logger.LogDebug("Update existing editGrade with id = {Id}", editGrade.g_id);
-
-        var grade = await _context.Grades
-            .FirstOrDefaultAsync(u => u.g_id == editGrade.g_id);
-        
-        if (grade is null)
-            return BadRequest(new ErrorModel("Grade does not exist"));
-        
-        _context.Entry(grade).State = EntityState.Modified;
-
-        switch (await _context.SaveChangesAsync())
+        try
         {
-            case 0:
-                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred"));
-            default:
-                var editedGrade =
-                    await _context.Grades.FirstOrDefaultAsync(u => u.g_id == grade.g_id);
-                return editedGrade is null
-                    ? StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred"))
-                    : Ok(editedGrade);
+            if (editGrade is null)
+                return BadRequest(new ErrorModel("Input data is empty"));
+
+            if (!_context.Grades.Any(u => u.g_id == editGrade.g_id))
+                return NotFound(new ErrorModel("User not found"));
+            _logger.LogDebug("Update existing editGrade with id = {Id}", editGrade.g_id);
+
+            var grade = await _context.Grades
+                .FirstOrDefaultAsync(u => u.g_id == editGrade.g_id);
+
+            if (grade is null)
+                return BadRequest(new ErrorModel("Grade does not exist"));
+
+            _context.Entry(grade).State = EntityState.Modified;
+
+            switch (await _context.SaveChangesAsync())
+            {
+                case 0:
+                    return StatusCode(StatusCodes.Status500InternalServerError,
+                        new ErrorModel("Some error has occurred"));
+                default:
+                    var editedGrade =
+                        await _context.Grades.FirstOrDefaultAsync(u => u.g_id == grade.g_id);
+                    return editedGrade is null
+                        ? StatusCode(StatusCodes.Status500InternalServerError,
+                            new ErrorModel("Some error has occurred"))
+                        : Ok(editedGrade);
+            }
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred"));
         }
     }
     
@@ -216,22 +246,29 @@ public class GradesController : Controller
     [ProducesResponseType(typeof(ErrorModel), (int) HttpStatusCode.InternalServerError)]
     public async Task<ActionResult> Delete(long id)
     {
-        if (id <= 0)
-            return BadRequest(new ErrorModel("The input data is empty"));
-
-        _logger.LogDebug("Delete existing grade with id = {Id}", id);
-
-        var toDelete = await _context.Grades.FirstOrDefaultAsync(u => u.g_id == id);
-
-        if (toDelete is null)
-            return NotFound(new ErrorModel("Grade not found"));
-
-        _context.Grades.Remove(toDelete);
-
-        return await _context.SaveChangesAsync() switch
+        try
         {
-            0 => StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred")),
-            _ => NoContent()
-        };
+            if (id <= 0)
+                return BadRequest(new ErrorModel("The input data is empty"));
+
+            _logger.LogDebug("Delete existing grade with id = {Id}", id);
+
+            var toDelete = await _context.Grades.FirstOrDefaultAsync(u => u.g_id == id);
+
+            if (toDelete is null)
+                return NotFound(new ErrorModel("Grade not found"));
+
+            _context.Grades.Remove(toDelete);
+
+            return await _context.SaveChangesAsync() switch
+            {
+                0 => StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred")),
+                _ => NoContent()
+            };
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred"));
+        }
     }
 }

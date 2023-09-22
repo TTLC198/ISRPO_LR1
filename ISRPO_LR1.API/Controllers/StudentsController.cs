@@ -40,36 +40,43 @@ public class StudentsController : Controller
     [ProducesResponseType(typeof(ErrorModel), (int) HttpStatusCode.InternalServerError)]
     public async Task<ActionResult<IEnumerable<Student>>> Get([FromQuery] QueryParameters<Student> queryParameters)
     {
-        _logger.LogDebug("Get list of students");
-
-        IQueryable<Student> allStudents =
-            _context.Students
-                .Include(s => s.Grades)
-                .OrderBy(queryParameters.OrderBy, queryParameters.IsDescending());
-
-        if (queryParameters.HasQuery())
+        try
         {
-            try
+            _logger.LogDebug("Get list of students");
+
+            IQueryable<Student> allStudents =
+                _context.Students
+                    .Include(s => s.Grades);
+
+            if (queryParameters.HasQuery())
             {
-                var parametersObject = (Student) queryParameters.Object;
-                allStudents = allStudents.Where(u =>
-                    u.s_full_name == parametersObject.s_full_name |
-                    u.s_birth_date == parametersObject.s_birth_date |
-                    u.s_email == parametersObject.s_email
-                );
+                try
+                {
+                    var parametersObject = (Student) queryParameters.Object;
+                    allStudents = allStudents.Where(u =>
+                        u.s_full_name == parametersObject.s_full_name |
+                        u.s_birth_date == parametersObject.s_birth_date |
+                        u.s_email == parametersObject.s_email
+                    );
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e.Message);
+                    return StatusCode(StatusCodes.Status500InternalServerError,
+                        new ErrorModel("Some error has occurred"));
+                }
             }
-            catch (Exception e)
+
+            return await allStudents.CountAsync() switch
             {
-                _logger.LogError(e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred"));
-            }
+                0 => NotFound(new ErrorModel("Students not found")),
+                _ => Ok(allStudents)
+            };
         }
-
-        return await allStudents.CountAsync() switch
+        catch
         {
-            0 => NotFound(new ErrorModel("Students not found")),
-            _ => Ok(allStudents)
-        };
+            return StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred"));
+        }
     }
 
     /// <summary>
@@ -91,15 +98,22 @@ public class StudentsController : Controller
     [ProducesResponseType(typeof(ErrorModel), (int) HttpStatusCode.InternalServerError)]
     public async Task<ActionResult<Student>> Get(int id)
     {
-        _logger.LogDebug("Get student with id = {Id}", id);
+        try
+        {
+            _logger.LogDebug("Get student with id = {Id}", id);
 
-        var student = await _context.Students
-            .FirstOrDefaultAsync(u => u.s_id == id);
+            var student = await _context.Students
+                .FirstOrDefaultAsync(u => u.s_id == id);
 
-        if (student is null)
-            return NotFound(new ErrorModel("Student not found"));
+            if (student is null)
+                return NotFound(new ErrorModel("Student not found"));
 
-        return Ok(student);
+            return Ok(student);
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred"));
+        }
     }
 
     /// <summary>
@@ -127,18 +141,25 @@ public class StudentsController : Controller
     [ProducesResponseType(typeof(ErrorModel), (int) HttpStatusCode.InternalServerError)]
     public async Task<ActionResult<Student>> Post([FromBody] Student? student)
     {
-        if (student is null)
-            return BadRequest(new ErrorModel("Input data is empty"));
-
-        _logger.LogDebug("Create new student with id = {id}", student.s_id);
-
-        var createdStudent = await _context.Students.AddAsync(student);
-
-        return await _context.SaveChangesAsync() switch
+        try
         {
-            0 => StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred")),
-            _ => StatusCode(StatusCodes.Status201Created, createdStudent)
-        };
+            if (student is null)
+                return BadRequest(new ErrorModel("Input data is empty"));
+
+            _logger.LogDebug("Create new student with id = {id}", student.s_id);
+
+            var createdStudent = await _context.Students.AddAsync(student);
+
+            return await _context.SaveChangesAsync() switch
+            {
+                0 => StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred")),
+                _ => StatusCode(StatusCodes.Status201Created, createdStudent)
+            };
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred"));
+        }
     }
 
     /// <summary>
@@ -169,32 +190,41 @@ public class StudentsController : Controller
     [ProducesResponseType(typeof(ErrorModel), (int) HttpStatusCode.InternalServerError)]
     public async Task<ActionResult<Student>> Put([FromBody] Student? editStudent)
     {
-        if (editStudent is null)
-            return BadRequest(new ErrorModel("Input data is empty"));
-
-        if (!_context.Students.Any(u => u.s_id == editStudent.s_id))
-            return NotFound(new ErrorModel("Student not found"));
-
-        _logger.LogDebug("Update existing student with id = {Id}", editStudent.s_id);
-
-        var student = await _context.Students
-            .FirstOrDefaultAsync(u => u.s_id == editStudent.s_id);
-
-        if (student is null)
-            return BadRequest(new ErrorModel("Student does not exist"));
-
-        _context.Entry(student).State = EntityState.Modified;
-
-        switch (await _context.SaveChangesAsync())
+        try
         {
-            case 0:
-                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred"));
-            default:
-                var editedStudent =
-                    await _context.Students.FirstOrDefaultAsync(u => u.s_id == student.s_id);
-                return editedStudent is null
-                    ? StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred"))
-                    : Ok(editedStudent);
+            if (editStudent is null)
+                return BadRequest(new ErrorModel("Input data is empty"));
+
+            if (!_context.Students.Any(u => u.s_id == editStudent.s_id))
+                return NotFound(new ErrorModel("Student not found"));
+
+            _logger.LogDebug("Update existing student with id = {Id}", editStudent.s_id);
+
+            var student = await _context.Students
+                .FirstOrDefaultAsync(u => u.s_id == editStudent.s_id);
+
+            if (student is null)
+                return BadRequest(new ErrorModel("Student does not exist"));
+
+            _context.Entry(student).State = EntityState.Modified;
+
+            switch (await _context.SaveChangesAsync())
+            {
+                case 0:
+                    return StatusCode(StatusCodes.Status500InternalServerError,
+                        new ErrorModel("Some error has occurred"));
+                default:
+                    var editedStudent =
+                        await _context.Students.FirstOrDefaultAsync(u => u.s_id == student.s_id);
+                    return editedStudent is null
+                        ? StatusCode(StatusCodes.Status500InternalServerError,
+                            new ErrorModel("Some error has occurred"))
+                        : Ok(editedStudent);
+            }
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred"));
         }
     }
 
@@ -219,22 +249,29 @@ public class StudentsController : Controller
     [ProducesResponseType(typeof(ErrorModel), (int) HttpStatusCode.InternalServerError)]
     public async Task<ActionResult> Delete(long id)
     {
-        if (id <= 0)
-            return BadRequest(new ErrorModel("The input data is empty"));
-
-        _logger.LogDebug("Delete existing student with id = {Id}", id);
-
-        var toDelete = await _context.Students.FirstOrDefaultAsync(u => u.s_id == id);
-
-        if (toDelete is null)
-            return NotFound(new ErrorModel("Student not found"));
-
-        _context.Students.Remove(toDelete);
-
-        return await _context.SaveChangesAsync() switch
+        try
         {
-            0 => StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred")),
-            _ => NoContent()
-        };
+            if (id <= 0)
+                return BadRequest(new ErrorModel("The input data is empty"));
+
+            _logger.LogDebug("Delete existing student with id = {Id}", id);
+
+            var toDelete = await _context.Students.FirstOrDefaultAsync(u => u.s_id == id);
+
+            if (toDelete is null)
+                return NotFound(new ErrorModel("Student not found"));
+
+            _context.Students.Remove(toDelete);
+
+            return await _context.SaveChangesAsync() switch
+            {
+                0 => StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred")),
+                _ => NoContent()
+            };
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred"));
+        }
     }
 }
