@@ -49,25 +49,19 @@ public class GradesController : Controller
 
             if (queryParameters.HasQuery())
             {
-                try
+                if (queryParameters.Object != null)
                 {
                     var parametersObject = (Grade) queryParameters.Object;
                     allGrades = allGrades.Where(u =>
                         u.g_value == parametersObject.g_value
                     );
                 }
-                catch (Exception e)
-                {
-                    _logger.LogError(e.Message);
-                    return StatusCode(StatusCodes.Status500InternalServerError,
-                        new ErrorModel("Some error has occurred"));
-                }
             }
 
             return await allGrades.CountAsync() switch
             {
                 0 => NotFound(new ErrorModel("Grades not found")),
-                _ => Ok(allGrades)
+                _ => Ok(await allGrades.ToListAsync())
             };
         }
         catch
@@ -150,7 +144,7 @@ public class GradesController : Controller
             return await _context.SaveChangesAsync() switch
             {
                 0 => StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred")),
-                _ => StatusCode(StatusCodes.Status201Created, createdGrade)
+                _ => StatusCode(StatusCodes.Status201Created, createdGrade.Entity)
             };
         }
         catch

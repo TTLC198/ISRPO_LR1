@@ -50,25 +50,19 @@ public class SubjectsController : Controller
 
             if (queryParameters.HasQuery())
             {
-                try
+                if (queryParameters.Object != null)
                 {
                     var parametersObject = (Subject) queryParameters.Object;
                     allSubjects = allSubjects.Where(u =>
                         u.sj_name == parametersObject.sj_name
                     );
                 }
-                catch (Exception e)
-                {
-                    _logger.LogError(e.Message);
-                    return StatusCode(StatusCodes.Status500InternalServerError,
-                        new ErrorModel("Some error has occurred"));
-                }
             }
 
             return await allSubjects.CountAsync() switch
             {
                 0 => NotFound(new ErrorModel("Subjects not found")),
-                _ => Ok(allSubjects)
+                _ => Ok(await allSubjects.ToListAsync())
             };
         }
         catch
@@ -150,7 +144,7 @@ public class SubjectsController : Controller
             return await _context.SaveChangesAsync() switch
             {
                 0 => StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred")),
-                _ => StatusCode(StatusCodes.Status201Created, createdSubject)
+                _ => StatusCode(StatusCodes.Status201Created, createdSubject.Entity)
             };
         }
         catch

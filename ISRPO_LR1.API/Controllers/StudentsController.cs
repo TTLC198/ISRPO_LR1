@@ -50,7 +50,7 @@ public class StudentsController : Controller
 
             if (queryParameters.HasQuery())
             {
-                try
+                if (queryParameters.Object != null)
                 {
                     var parametersObject = (Student) queryParameters.Object;
                     allStudents = allStudents.Where(u =>
@@ -59,18 +59,12 @@ public class StudentsController : Controller
                         u.s_email == parametersObject.s_email
                     );
                 }
-                catch (Exception e)
-                {
-                    _logger.LogError(e.Message);
-                    return StatusCode(StatusCodes.Status500InternalServerError,
-                        new ErrorModel("Some error has occurred"));
-                }
             }
 
             return await allStudents.CountAsync() switch
             {
                 0 => NotFound(new ErrorModel("Students not found")),
-                _ => Ok(allStudents)
+                _ => Ok(await allStudents.ToListAsync())
             };
         }
         catch
@@ -153,7 +147,7 @@ public class StudentsController : Controller
             return await _context.SaveChangesAsync() switch
             {
                 0 => StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel("Some error has occurred")),
-                _ => StatusCode(StatusCodes.Status201Created, createdStudent)
+                _ => StatusCode(StatusCodes.Status201Created, createdStudent.Entity)
             };
         }
         catch
