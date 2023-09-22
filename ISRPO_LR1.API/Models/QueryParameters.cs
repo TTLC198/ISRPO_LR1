@@ -11,18 +11,18 @@ public class QueryParameters<T>
     private int _pageCount = maxPageCount;
     public int PageCount
     {
-        get { return _pageCount; }
-        set { _pageCount = (value > maxPageCount) ? maxPageCount : value; }
+        get => _pageCount;
+        set => _pageCount = (value > maxPageCount) ? maxPageCount : value;
     }
 
     public string? Query { get; set; } = "";
-
-    public object Object
+    
+    public object? Object
     {
         get
         {
             if (this.HasQuery())
-                return JsonSerializer.Deserialize<T>(Query);
+                return JsonSerializer.Deserialize<T>(Query ?? string.Empty);
             return null;
         }
     }

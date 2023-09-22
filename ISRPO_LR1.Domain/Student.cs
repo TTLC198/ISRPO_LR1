@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace ISRPO_LR1.Domain;
 
@@ -13,5 +14,6 @@ public partial class Student
 
     public string? s_email { get; set; }
 
+    [JsonIgnore]
     public virtual ICollection<Grade> Grades { get; set; } = new List<Grade>();
 }
