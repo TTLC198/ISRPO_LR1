@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ISRPO_LR1.Domain", "ISRPO_L
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ISRPO_LR1.API", "ISRPO_LR1.API\ISRPO_LR1.API.csproj", "{C602AB5F-1656-497D-95D0-4F50778813EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ISRPO_LR1.Web", "ISRPO_LR1.Web\ISRPO_LR1.Web.csproj", "{0B51B4D7-565C-45BA-A607-AEEBF2EE63C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{C602AB5F-1656-497D-95D0-4F50778813EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C602AB5F-1656-497D-95D0-4F50778813EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C602AB5F-1656-497D-95D0-4F50778813EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B51B4D7-565C-45BA-A607-AEEBF2EE63C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B51B4D7-565C-45BA-A607-AEEBF2EE63C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B51B4D7-565C-45BA-A607-AEEBF2EE63C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B51B4D7-565C-45BA-A607-AEEBF2EE63C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,46 @@
+﻿<div class="panel-group">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h4 class="d-flex justify-content-center">
+                @ViewBag.Title
+            </h4>
+            <hr/>
+        </div>
+        <div class="panel-body">
+            @foreach (var course in ViewBag.Grades)
+            {
+                <button class="btn btn-primary w-100 text-center" type="button" data-bs-toggle="collapse" data-bs-target=@("#courseCollapse" + course.Id) aria-expanded="false" aria-controls=@("#courseCollapse" + course.Id)>
+                    @course.Name
+                </button>
+                <div class="col mb-3">
+                    <div class="collapse" data-bs-parent="#coursesParent" id=@("courseCollapse" + course.Id)>
+                        <div class="card card-body mb-3">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Урок</th>
+                                    <th scope="col">Оценка</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @{
+                                    var rowCounter = 1;
+                                }
+                                @foreach (var grade in course.Grades)
+                                {
+                                    <tr>
+                                        <th scope="row">@(rowCounter++)</th>
+                                        <td><a href="@Url.Action("Get", "Grades", new {id = @grade.LessonId})">@grade.LessonName</a></td>
+                                        <td>@(grade.GradeValue ?? "Не оценён")</td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
