@@ -1,9 +1,9 @@
 ﻿@model ISRPO_LR1.Domain.Service.ServiceResponseModel<ISRPO_LR1.Domain.Student>
 @{
-    ViewBag.Title = "Редактирование студента";
+    ViewBag.Title = "Редактирование оценки";
 }
 
-@using (Html.BeginForm("Edit", "Students", FormMethod.Post, new {@class = "form-horizontal d-flex flex-column w-100", id="formData", role = "form"}))
+@using (Html.BeginForm("Edit", "Subjects", FormMethod.Post, new {@class = "form-horizontal d-flex flex-column w-100", id="formData", role = "form"}))
 {
     @Html.AntiForgeryToken()
     <h4 class="d-flex justify-content-center">

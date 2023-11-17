@@ -8,6 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="bootstrap" Version="5.3.2" />
+        <PackageReference Include="jQuery" Version="3.7.1" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.11" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.11" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.11" />
@@ -23,10 +25,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ISRPO_LR1.Domain\ISRPO_LR1.Domain.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Views\Grades\" />
     </ItemGroup>
 
 

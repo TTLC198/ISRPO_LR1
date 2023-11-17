@@ -1,22 +1,142 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
 body {
-  margin-bottom: 60px;
+  background: #F9F4F2
 }
+
+img {
+  background-color: transparent;
+  overflow: hidden;
+}
+
+.img-frame {
+  background: transparent;
+  margin: 0 auto;
+}
+
+.aspect-ratio {
+  position: relative;
+}
+.aspect-ratio-1-1 {
+  padding-bottom: 100%;
+}
+.aspect-ratio-4-3 {
+  padding-bottom: 75%;
+}
+.aspect-ratio-16-9 {
+  padding-bottom: 56.25%;
+}
+
+#submitPayment.visible{
+  visibility: visible;
+}
+
+#submitPayment {
+  visibility:hidden; /* initial state = hidden */
+}
+
+#submitButton.hidden{
+  visibility: hidden;
+}
+
+.fit-img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  max-width: 80%;
+  max-height: 90%
+}
+.fit-img-bottom {
+  top: auto;
+}
+.fit-img-tight {
+  max-width: 100%;
+  max-height: 100%
+}
+
+.header,
+.footer,
+.course-card,
+.btn-primary {
+  background-color: #433044;
+}
+
+main > .container {
+  padding: 30px 15px 30px;
+}
+
+/*.footer {
+	text-align: center;
+	padding: 10px;
+}*/
+
+.main_section2 {
+  padding-top: 60px;
+  padding-bottom: 30px;
+}
+
+.main_section {
+  padding-bottom: 100px;
+}
+
+@font-face {
+  font-family: TenorSans;
+  src: url('../fonts/TenorSans-Regular.ttf');
+}
+
+.section_title {
+  margin: 0;
+  margin-bottom: 70px;
+  font-family: TenorSans;
+  font-style: normal;
+  font-weight: 400;
+  color: #380D2F;
+  font-size: 48px;
+  line-height: 56px;
+  text-transform: uppercase
+}
+
+.section_title * {
+  font-size: 48px;
+  line-height: 56px
+}
+
+.section_title p {
+  margin: 0
+}
+
+.section_title__light {
+  color: #9B657C
+}
+
+.section_title--create_professions p:nth-child(1) {
+  text-indent: 85px
+}
+
+.section_title--create_professions p:nth-child(2) {
+  padding-left: 85px;
+  text-indent: 170px
+}
+
+.section_title--features p:nth-child(1) {
+  text-indent: 85px
+}
+
+.section_title--features p:nth-child(2) {
+  margin-left: 85px;
+  text-indent: -85px
+}
+
+.section_title--who p:nth-child(2) {
+  text-indent: 85px
+}
+
+.section_title--trust p:nth-child(2) {
+  text-indent: 85px
+}
+
+.section_title--teach p:nth-child(2) {
+  text-indent: 85px
+}
+

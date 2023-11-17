@@ -14,8 +14,8 @@
             @if (ViewBag.IsEditable == true)
             {
                 <div class="mb-1 d-flex justify-content-between w-100">
-                    <a class="btn btn-success w-100 m-1" href="@Url.Action("Edit", "Students", new {id = ViewBag.Grade.Id})">Редактировать</a>
-                    <a class="btn btn-danger w-100 m-1" href="@Url.Action("Delete", "Students", new {id = ViewBag.Grade.Id})">Удалить</a>
+                    <a class="btn btn-success w-100 m-1" href="@Url.Action("Edit", "Students", new {id = Model.Item.s_id})">Редактировать</a>
+                    <a class="btn btn-danger w-100 m-1" href="@Url.Action("Delete", "Students", new {id = Model.Item.s_id})">Удалить</a>
                 </div>
             }
         </div>

@@ -1,0 +1,30 @@
+﻿@model ISRPO_LR1.Domain.Service.ServiceResponseModel<ISRPO_LR1.Domain.Subject>
+@{
+    ViewBag.Title = "Редактирование предмета";
+}
+
+@using (Html.BeginForm("Edit", "Subjects", FormMethod.Post, new {@class = "form-horizontal d-flex flex-column w-100", id="formData", role = "form"}))
+{
+    @Html.AntiForgeryToken()
+    <h4 class="d-flex justify-content-center">
+        @ViewBag.Title
+    </h4>
+    <hr/>
+    @Html.ValidationSummary("", new {@class = "text-danger"})
+    @Html.Hidden("sj_id", Model.Item.sj_id)
+    <div class="form-group mb-1">
+        @Html.LabelFor(m => m.Item.sj_name, new {@class = "col-md-2 form-label w-100"})
+        <div class="col-md-10 w-100">
+            @Html.TextBox("sj_name", Model.Item.sj_name, new {@class = "form-control w-100"})
+        </div>
+    </div>
+    <div class="form-group mb-1">
+        @Html.LabelFor(m => m.Item.sj_hours, new {@class = "col-md-2 form-label w-100"})
+        <div class="col-md-10 w-100">
+            @Html.TextBox("sj_hours", Model.Item.sj_hours, new {@class = "form-control w-100"})
+        </div>
+    </div>
+    <div class="form-group mb-1 d-flex justify-content-center">
+        <input id="submit" type="submit" class="btn btn-success w-100" value="Сохранить"/>
+    </div>
+}

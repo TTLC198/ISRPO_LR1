@@ -1,0 +1,29 @@
+﻿@model ISRPO_LR1.Domain.Service.ServiceResponseModel<ISRPO_LR1.Domain.Subject>
+@{
+    ViewBag.Title = "Предмет";
+}
+
+@if (Model.Success)
+{
+    <div class="media">
+        <div class="media-body">
+            <h5>Название: @Model.Item.sj_name</h5>
+            <h6>Количество часов: @Model.Item.sj_hours</h6>
+
+            @if (ViewBag.IsEditable == true)
+            {
+                <div class="mb-1 d-flex justify-content-between w-100">
+                    <a class="btn btn-success w-100 m-1" href="@Url.Action("Edit", "Subjects", new {id = Model.Item.sj_id})">Редактировать</a>
+                    <a class="btn btn-danger w-100 m-1" href="@Url.Action("Delete", "Subjects", new {id = Model.Item.sj_id})">Удалить</a>
+                </div>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="media">
+        <h2>Произошла ошибка!</h2>
+        <h5>@Model.Error</h5>
+    </div>
+}

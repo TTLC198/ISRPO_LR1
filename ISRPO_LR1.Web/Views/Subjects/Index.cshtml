@@ -1,4 +1,4 @@
-﻿@model ISRPO_LR1.Domain.Service.ServiceResponseModel<ISRPO_LR1.Web.Models.ViewModels.BaseIndexViewModel<ISRPO_LR1.Domain.Student>>
+﻿@model ISRPO_LR1.Domain.Service.ServiceResponseModel<ISRPO_LR1.Web.Models.ViewModels.BaseIndexViewModel<ISRPO_LR1.Domain.Subject>>
 
 <div class="panel-group">
     <div class="panel panel-info">
@@ -18,25 +18,23 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Имя</th>
-                        <th scope="col">Почта</th>
-                        <th scope="col">Дата рождения</th>
+                        <th scope="col">Кол-во часов</th>
                         <th scope="col">Действия</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach (var student in Model.Item.Items)
+                    @foreach (var subject in Model.Item.Items)
                     {
-                        <tr onclick="location.href='@Url.Action("Get", "Students", new {id = student.s_id, returnUrl = Context.Request.Path.Value,})'">
+                        <tr onclick="location.href='@Url.Action("Get", "Subjects", new {id = subject.sj_id, returnUrl = Context.Request.Path.Value,})'">
                             <th>@(row++)</th>
-                            <th>@student.s_full_name</th>
-                            <th>@student.s_email</th>
-                            <th>@student.s_birth_date</th>
+                            <th>@subject.sj_name</th>
+                            <th>@subject.sj_hours</th>
                             <th>
                                 <div class="mb-1 d-flex justify-content-between w-100">
-                                    <a class="btn btn-success w-100 m-1" href="@Url.Action("Edit", "Students", new {id = student.s_id, returnUrl = Context.Request.Path.Value,})">
+                                    <a class="btn btn-success w-100 m-1" href="@Url.Action("Edit", "Subjects", new {id = subject.sj_id, returnUrl = Context.Request.Path.Value,})">
                                         <span class="mdi mdi-pencil-outline"></span>
                                     </a>
-                                    <a class="btn btn-danger w-100 m-1" href="@Url.Action("Delete", "Students", new {id = student.s_id, returnUrl = Context.Request.Path.Value,})">
+                                    <a class="btn btn-danger w-100 m-1" href="@Url.Action("Delete", "Subjects", new {id = subject.sj_id, returnUrl = Context.Request.Path.Value,})">
                                         <span class="mdi mdi-trash-can-outline"></span>
                                     </a>
                                 </div>
@@ -46,7 +44,7 @@
                     </tbody>
                 </table>
 
-                <a class="btn btn-success w-100 m-1" href="@Url.Action("Create", "Students", new {returnUrl = Context.Request.Path.Value,})">
+                <a class="btn btn-success w-100 m-1" href="@Url.Action("Create", "Subjects", new {returnUrl = Context.Request.Path.Value,})">
                     <span class="mdi mdi-plus"></span>
                 </a>
             }

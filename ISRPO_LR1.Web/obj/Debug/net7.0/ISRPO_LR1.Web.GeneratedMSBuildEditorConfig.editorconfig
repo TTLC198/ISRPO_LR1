@@ -9,57 +9,77 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = ISRPO_LR1.Web
 build_property.RootNamespace = ISRPO_LR1.Web
-build_property.ProjectDir = C:\Users\TTLC198\RiderProjects\ISRPO_LR1\ISRPO_LR1.Web\
+build_property.ProjectDir = C:\Users\yoreh\RiderProjects\ISRPO_LR1\ISRPO_LR1.Web\
 build_property.RazorLangVersion = 7.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\TTLC198\RiderProjects\ISRPO_LR1\ISRPO_LR1.Web
+build_property.MSBuildProjectDirectory = C:\Users\yoreh\RiderProjects\ISRPO_LR1\ISRPO_LR1.Web
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/TTLC198/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/Courses/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlc1xDcmVhdGUuY3NodG1s
+[C:/Users/yoreh/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/Grades/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3JhZGVzXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TTLC198/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/Courses/Grade.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlc1xHcmFkZS5jc2h0bWw=
+[C:/Users/yoreh/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/Grades/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3JhZGVzXEVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TTLC198/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/Courses/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlc1xJbmRleC5jc2h0bWw=
+[C:/Users/yoreh/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/Grades/Get.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3JhZGVzXEdldC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TTLC198/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/Shared/Error.cshtml]
+[C:/Users/yoreh/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/Grades/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3JhZGVzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/yoreh/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TTLC198/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/yoreh/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TTLC198/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/Students/Create.cshtml]
+[C:/Users/yoreh/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/Students/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudHNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TTLC198/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/Students/Edit.cshtml]
+[C:/Users/yoreh/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/Students/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudHNcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TTLC198/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/Students/Get.cshtml]
+[C:/Users/yoreh/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/Students/Get.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudHNcR2V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TTLC198/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/Students/Index.cshtml]
+[C:/Users/yoreh/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/Students/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudHNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TTLC198/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/_ViewImports.cshtml]
+[C:/Users/yoreh/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/Subjects/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3ViamVjdHNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/yoreh/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/Subjects/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3ViamVjdHNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/yoreh/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/Subjects/Get.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3ViamVjdHNcR2V0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/yoreh/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/Subjects/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3ViamVjdHNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/yoreh/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TTLC198/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/_ViewStart.cshtml]
+[C:/Users/yoreh/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TTLC198/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/Shared/_Layout.cshtml]
+[C:/Users/yoreh/RiderProjects/ISRPO_LR1/ISRPO_LR1.Web/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-pieu4nbjp2

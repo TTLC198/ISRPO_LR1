@@ -6,11 +6,11 @@ namespace ISRPO_LR1.Web.Repositories.Base;
 public abstract class BaseRepository<T>
 {
     protected readonly HttpClient HttpClient;
-    protected readonly Logger<BaseRepository<T>> Logger;
+    protected readonly ILogger<BaseRepository<T>> Logger;
 
-    protected string BasePath => $"{typeof(T).ToString().ToLower()}s";
+    protected string BasePath => $"{typeof(T).Name.ToLower()}s";
 
-    protected BaseRepository(HttpClient httpClient, Logger<BaseRepository<T>> logger)
+    public BaseRepository(HttpClient httpClient, ILogger<BaseRepository<T>> logger)
     {
         HttpClient = httpClient;
         Logger = logger;
@@ -28,6 +28,7 @@ public abstract class BaseRepository<T>
                 };
             return new ServiceResponseModel<List<T>?>()
             {
+                Success = true,
                 Item = await JsonSerializer.DeserializeAsync<List<T>>(await response.Content.ReadAsStreamAsync())
             };
         }
@@ -53,6 +54,7 @@ public abstract class BaseRepository<T>
                 };
             return new ServiceResponseModel<T?>()
             {
+                Success = true,
                 Item = await JsonSerializer.DeserializeAsync<T>(await response.Content.ReadAsStreamAsync())
             };
         }
@@ -79,6 +81,7 @@ public abstract class BaseRepository<T>
                 };
             return new ServiceResponseModel<T?>()
             {
+                Success = true,
                 Item = await JsonSerializer.DeserializeAsync<T>(await response.Content.ReadAsStreamAsync())
             };
         }
@@ -99,7 +102,7 @@ public abstract class BaseRepository<T>
         try
         {
             var httpContent = new StringContent(JsonSerializer.Serialize(model), System.Text.Encoding.UTF8, "application/json");
-            var response = await HttpClient.PostAsync($"{BasePath}/{id}", httpContent);
+            var response = await HttpClient.PutAsync($"{BasePath}", httpContent);
             if (!response.IsSuccessStatusCode)
                 return new ServiceResponseModel<T?>()
                 {
@@ -107,6 +110,7 @@ public abstract class BaseRepository<T>
                 };
             return new ServiceResponseModel<T?>()
             {
+                Success = true,
                 Item = await JsonSerializer.DeserializeAsync<T>(await response.Content.ReadAsStreamAsync())
             };
         }

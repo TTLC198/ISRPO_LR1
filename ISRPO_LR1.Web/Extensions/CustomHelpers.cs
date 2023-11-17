@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
-namespace BeautySchool.Extensions;
+namespace ISRPO_LR1.Web.Extensions;
 
 public static class CustomHelpers
 {
