@@ -1,0 +1,29 @@
+﻿@model ISRPO_LR1.Domain.Subject
+@{
+    ViewBag.Title = "Создание предмета";
+}
+
+@using (Html.BeginForm("Create", "Subjects", FormMethod.Post, new {@class = "form-horizontal d-flex flex-column w-100", id="formData", role = "form"}))
+{
+    @Html.AntiForgeryToken()
+    <h4 class="d-flex justify-content-center">
+        @ViewBag.Title
+    </h4>
+    <hr/>
+    @Html.ValidationSummary("", new {@class = "text-danger"})
+    <div class="form-group mb-1">
+        @Html.LabelFor(m => m.sj_name, new {@class = "col-md-2 form-label w-100"})
+        <div class="col-md-10 w-100">
+            @Html.TextBoxFor(m => m.sj_name, new {@class = "form-control w-100"})
+        </div>
+    </div>
+    <div class="form-group mb-1">
+        @Html.LabelFor(m => m.sj_hours, new {@class = "col-md-2 form-label w-100"})
+        <div class="col-md-10 w-100">
+            @Html.TextAreaFor(m => m.sj_hours, new {@class = "form-control w-100"})
+        </div>
+    </div>
+    <div class="form-group mb-1 d-flex justify-content-center">
+        <input id="submit" type="submit" class="btn btn-success w-100" value="Сохранить"/>
+    </div>
+}

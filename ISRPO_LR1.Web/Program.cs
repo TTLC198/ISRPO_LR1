@@ -3,6 +3,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+var apiWebAddress = builder.Configuration.GetValue<string>("ApiWebAddress", "http://localhost:5000");
+builder.Services.AddScoped<HttpClient>(_ =>
+new HttpClient()
+{
+    BaseAddress = new Uri(apiWebAddress ?? string.Empty)
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

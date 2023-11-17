@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\ISRPO_LR1.Web.props" />
+</Project>

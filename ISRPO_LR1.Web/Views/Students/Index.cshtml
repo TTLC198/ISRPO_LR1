@@ -1,0 +1,51 @@
+﻿@model ISRPO_LR1.Domain.Service.ServiceResponseModel<ISRPO_LR1.Web.Models.ViewModels.BaseIndexViewModel<ISRPO_LR1.Domain.Student>>
+
+<div class="panel-group">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h4 class="d-flex justify-content-center">
+                @ViewBag.Title
+            </h4>
+            <hr/>
+        </div>
+        <div class="panel-body">
+            @foreach (var student in Model.Item.Items)
+            {
+                <div class="row">
+                    <button class="btn btn-primary w-100 text-center" type="button" data-bs-toggle="collapse" data-bs-target=@("#courseCollapse" + student.s_id) aria-expanded="false" aria-controls=@("#courseCollapse" + student.s_id)>
+                        @student.s_full_name
+                    </button>
+                    <div class="col mb-3">
+                        <div class="collapse" data-bs-parent="#coursesParent" id=@("courseCollapse" + student.s_id)>
+                            <div class="card card-body mb-3">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Оценка</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @{
+                                        var rowCounter = 1;
+                                    }
+                                    @foreach (var grade in student.Grades)
+                                    {
+                                        <tr>
+                                            <th scope="row">@(rowCounter++)</th>
+                                            <td>
+                                                <a href="@Url.Action("Get", "Grades", new {id = @grade.g_id})">@grade.g_value</a>
+                                            </td>
+                                            <td>@(grade.g_value <= 0 ? "Не оценён" : grade.g_value)</td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
