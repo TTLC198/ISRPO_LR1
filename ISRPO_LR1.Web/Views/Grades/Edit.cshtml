@@ -1,9 +1,9 @@
-﻿@model ISRPO_LR1.Domain.Service.ServiceResponseModel<ISRPO_LR1.Domain.Student>
+﻿@model ISRPO_LR1.Domain.Service.ServiceResponseModel<ISRPO_LR1.Domain.Grade>
 @{
     ViewBag.Title = "Редактирование оценки";
 }
 
-@using (Html.BeginForm("Edit", "Subjects", FormMethod.Post, new {@class = "form-horizontal d-flex flex-column w-100", id="formData", role = "form"}))
+@using (Html.BeginForm("Edit", "Grades", FormMethod.Post, new {@class = "form-horizontal d-flex flex-column w-100", id="formData", role = "form"}))
 {
     @Html.AntiForgeryToken()
     <h4 class="d-flex justify-content-center">
@@ -11,23 +11,11 @@
     </h4>
     <hr/>
     @Html.ValidationSummary("", new {@class = "text-danger"})
-    @Html.Hidden("s_id", Model.Item.s_id)
+    @Html.Hidden("g_id", Model.Item.g_id)
     <div class="form-group mb-1">
-        @Html.LabelFor(m => m.Item.s_email, new {@class = "col-md-2 form-label w-100"})
+        @Html.LabelFor(m => m.Item.g_value, new {@class = "col-md-2 form-label w-100"})
         <div class="col-md-10 w-100">
-            @Html.TextBox("s_email", Model.Item.s_email, new {@class = "form-control w-100"})
-        </div>
-    </div>
-    <div class="form-group mb-1">
-        @Html.LabelFor(m => m.Item.s_birth_date, new {@class = "col-md-2 form-label w-100"})
-        <div class="col-md-10 w-100">
-            @Html.TextBox("s_birth_date", Model.Item.s_birth_date, new {@class = "form-control w-100"})
-        </div>
-    </div>
-    <div class="form-group mb-1">
-        @Html.LabelFor(m => m.Item.s_full_name, new {@class = "col-md-2 form-label w-100"})
-        <div class="col-md-10 w-100">
-            @Html.TextBox("s_full_name", Model.Item.s_full_name, new {@class = "form-control w-100"})
+            @Html.TextBox("g_value", Model.Item.g_value, new {@class = "form-control w-100"})
         </div>
     </div>
     <div class="form-group mb-1 d-flex justify-content-center">

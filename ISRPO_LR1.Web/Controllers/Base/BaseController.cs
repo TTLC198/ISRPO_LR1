@@ -42,7 +42,7 @@ public abstract class BaseController<T> : Controller
     }
     
     [HttpGet("create")]
-    public virtual IActionResult Create()
+    public virtual async Task<IActionResult> Create()
     {
         return View();
     }

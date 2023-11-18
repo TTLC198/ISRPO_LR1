@@ -12,42 +12,59 @@
             @if (Model.Success)
             {
                 @foreach (var student in Model.Item.Items)
-            {
-                <div class="row">
-                    <button class="btn btn-primary w-100 text-center" type="button" data-bs-toggle="collapse" data-bs-target=@("#courseCollapse" + student.s_id) aria-expanded="false" aria-controls=@("#courseCollapse" + student.s_id)>
-                        @student.s_full_name
-                    </button>
-                    <div class="col mb-3">
-                        <div class="collapse" data-bs-parent="#coursesParent" id=@("courseCollapse" + student.s_id)>
-                            <div class="card card-body mb-3">
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Оценка</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @{
-                                        var rowCounter = 1;
-                                    }
-                                    @foreach (var grade in student.Grades)
-                                    {
+                {
+                    <div class="row">
+                        <button class="btn btn-primary w-100 text-center" type="button" data-bs-toggle="collapse" data-bs-target=@("#courseCollapse" + student.s_id) aria-expanded="false" aria-controls=@("#courseCollapse" + student.s_id)>
+                            Имя студента: @student.s_full_name
+                        </button>
+                        <div class="col mb-3">
+                            <div class="collapse" data-bs-parent="#coursesParent" id=@("courseCollapse" + student.s_id)>
+                                <div class="card card-body mb-3">
+                                    <table class="table">
+                                        <thead>
                                         <tr>
-                                            <th scope="row">@(rowCounter++)</th>
-                                            <td>
-                                                <a href="@Url.Action("Get", "Grades", new {id = @grade.g_id})">@grade.g_value</a>
-                                            </td>
-                                            <td>@(grade.g_value <= 0 ? "Не оценён" : grade.g_value)</td>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Оценка</th>
+                                            <th scope="col">Предмет</th>
+                                            <th scope="col">Действие</th>
                                         </tr>
-                                    }
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                        @{
+                                            var rowCounter = 1;
+                                        }
+                                        @foreach (var grade in student.Grades)
+                                        {
+                                            <tr>
+                                                <th scope="row">@(rowCounter++)</th>
+                                                <td>
+                                                    <a href="@Url.Action("Get", "Grades", new {id = @grade.g_id})">@grade.g_value</a>
+                                                </td>
+                                                <td>
+                                                    <a href="@Url.Action("Get", "Subjects", new {id = @grade.g_sj_id})">@(grade.g_sj?.sj_name ?? "Без имени")</a>
+                                                </td>
+                                                <td>
+                                                    <div class="mb-1 d-flex justify-content-between w-100">
+                                                        <a class="btn btn-success w-100 m-1" href="@Url.Action("Edit", "Grades", new {id = grade.g_id, returnUrl = Context.Request.Path.Value,})">
+                                                            <span class="mdi mdi-pencil-outline"></span>
+                                                        </a>
+                                                        <a class="btn btn-danger w-100 m-1" href="@Url.Action("Delete", "Grades", new {id = grade.g_id, returnUrl = Context.Request.Path.Value,})">
+                                                            <span class="mdi mdi-trash-can-outline"></span>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            }
+                }
+                <a class="btn btn-success w-100 m-1" href="@Url.Action("Create", "Grades", new {returnUrl = Context.Request.Path.Value,})">
+                    <span class="mdi mdi-plus"></span>
+                </a>
             }
             else
             {

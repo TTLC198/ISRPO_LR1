@@ -1,5 +1,6 @@
 ﻿@using System.Globalization
-@model ISRPO_LR1.Domain.Grade
+@using ISRPO_LR1.Domain
+@model ISRPO_LR1.Web.Models.ViewModels.GradeCreateViewModel
 @{
     ViewBag.Title = "Создание оценки";
 }
@@ -22,15 +23,15 @@
         </div>
     </div>
     <div class="form-group mb-1">
-        @Html.LabelFor(m => m.g_value, new {@class = "col-md-2 form-label w-100"})
+        @Html.LabelFor(m => m.g_s, new {@class = "col-md-2 form-label w-100"})
         <div class="col-md-10 w-100">
-            @Html.DropDownListFor(u => u.g_value, new SelectList(ViewBag.Students, new CultureInfo("ru-RU").TextInfo.ToTitleCase("Не выбрано")), new {@class = "form-control w-100"})
+            @Html.DropDownList("g_s_id", new SelectList(Model.Students ?? new List<Student>(), "s_id", "s_full_name"), new {@class = "form-control w-100"})
         </div>
     </div>
     <div class="form-group mb-1">
-        @Html.LabelFor(m => m.g_value, new {@class = "col-md-2 form-label w-100"})
+        @Html.LabelFor(m => m.g_sj, new {@class = "col-md-2 form-label w-100"})
         <div class="col-md-10 w-100">
-            @Html.DropDownListFor(u => u.g_value, new SelectList(ViewBag.Subjects, new CultureInfo("ru-RU").TextInfo.ToTitleCase("Не выбрано")), new {@class = "form-control w-100"})
+            @Html.DropDownList("g_sj_id", new SelectList(Model.Subjects ?? new List<Subject>(), "sj_id", "sj_name"), new {@class = "form-control w-100"})
         </div>
     </div>
     <div class="form-group mb-1 d-flex justify-content-center">

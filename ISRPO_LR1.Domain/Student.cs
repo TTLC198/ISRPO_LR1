@@ -15,7 +15,6 @@ public partial class Student
     public DateTime s_birth_date { get; set; }
     [Display(Name = "Электронная почта")]
     public string? s_email { get; set; }
-
-    [JsonIgnore]
+    [JsonPropertyName("grades")]
     public virtual ICollection<Grade> Grades { get; set; } = new List<Grade>();
 }

@@ -16,9 +16,7 @@ public partial class Grade
     [Display(Name = "Идентификатор предмета")]
     public int g_sj_id { get; set; }
 
-    [JsonIgnore]
     public virtual Student? g_s { get; set; }
 
-    [JsonIgnore]
     public virtual Subject? g_sj { get; set; }
 }
